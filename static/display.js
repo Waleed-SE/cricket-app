@@ -906,8 +906,25 @@ class CricketDisplay {
         currentWickets = this.currentMatch.fall_of_wickets.length;
       }
 
+      // Parse the over format and convert to display format
+      // lastWicket.over is stored as "X.Y" where X is 1-based over, Y is ball
+      // We need to convert to display format where over is 0-based (completed overs)
+      let displayOver = lastWicket.over;
+      if (
+        lastWicket.over &&
+        typeof lastWicket.over === "string" &&
+        lastWicket.over.includes(".")
+      ) {
+        const [overNum, ballNum] = lastWicket.over.split(".");
+        const storedOver = parseInt(overNum);
+        const storedBall = parseInt(ballNum);
+        // Convert 1-based stored over to 0-based display over
+        const completedOvers = Math.max(0, storedOver - 1);
+        displayOver = `${completedOvers}.${storedBall}`;
+      }
+
       // Format: "Last Wkt: Player Name (runs/wickets, over)"
-      const wicketText = `Last Wkt: ${lastWicket.player} (${lastWicket.runs}/${currentWickets}, ${lastWicket.over})`;
+      const wicketText = `Last Wkt: ${lastWicket.player} (${lastWicket.runs}/${currentWickets}, ${displayOver})`;
       lastWicketEl.textContent = wicketText;
     } else {
       lastWicketEl.textContent = "No wickets";
