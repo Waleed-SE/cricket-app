@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket Control Panel</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='control.css') }}"
+    />
+  </head>
+  <body>
+    <div class="control-container">
+      <header class="control-header">
+        <h1>Cricket Match Control Panel</h1>
+        <div class="status-indicator" id="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Disconnected</span>
+        </div>
+      </header>
+
+      <!-- Match Setup Section -->
+      <section class="setup-section" id="setup-section">
+        <h2>Match Setup</h2>
+        <div class="setup-form">
+          <div class="form-group">
+            <label>Total Overs:</label>
+            <input type="number" id="total-overs" min="1" max="50" value="20" />
+          </div>
+
+          <div class="teams-setup">
+            <div class="team-setup">
+              <h3>Team 1</h3>
+              <input
+                type="text"
+                id="team1-name"
+                placeholder="Team 1 Name"
+                value="Pakistan"
+              />
+              <div class="players-input">
+                <textarea
+                  id="team1-players"
+                  placeholder="Enter player names (one per line)"
+                >
+Sahibzada Farha
+Fakhar Zaman
+Babar Azam
+Mohammad Rizwan
+Shadab Khan
+Iftikhar Ahmed
+Asif Ali
+Imad Wasim
+Shaheen Afridi
+Haris Rauf
+Naseem Shah</textarea
+                >
+              </div>
+            </div>
+
+            <div class="team-setup">
+              <h3>Team 2</h3>
+              <input
+                type="text"
+                id="team2-name"
+                placeholder="Team 2 Name"
+                value="UAE"
+              />
+              <div class="players-input">
+                <textarea
+                  id="team2-players"
+                  placeholder="Enter player names (one per line)"
+                >
+Muhammad Waseem
+Vriitya Aravind
+Aryansh Sharma
+Asif Khan
+Basil Hameed
+Muhammad Rohid
+Aayan Khan
+Karthik Meiyappan
+Junaid Siddique
+Ali Naseer
+Zahoor Khan</textarea
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="toss-section">
+            <h3>Toss</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Toss Winner:</label>
+                <select id="toss-winner">
+                  <option value="">Select Team</option>
+                  <option value="Pakistan">Pakistan</option>
+                  <option value="UAE">UAE</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Decision:</label>
+                <select id="toss-decision">
+                  <option value="bat">Bat First</option>
+                  <option value="bowl">Bowl First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="createMatch()">
+            Create Match
+          </button>
+
+          <div class="load-section">
+            <h3>Or Load Existing Match</h3>
+            <select id="saved-matches">
+              <option value="">Select a saved match</option>
+            </select>
+            <button class="btn-secondary" onclick="loadMatch()">
+              Load Match
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Innings Setup Section -->
+      <section
+        class="innings-section"
+        id="innings-section"
+        style="display: none"
+      >
+        <h2>Innings Setup</h2>
+        <div class="innings-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Opening Batter (Striker):</label>
+              <select id="opening-striker">
+                <option value="">Select Striker</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Opening Batter (Non-Striker):</label>
+              <select id="opening-non-striker">
+                <option value="">Select Non-Striker</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Opening Bowler:</label>
+              <select id="opening-bowler">
+                <option value="">Select Bowler</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="startInnings()">
+            Start Innings
+          </button>
+        </div>
+      </section>
+
+      <!-- Live Scoring Section -->
+      <section
+        class="scoring-section"
+        id="scoring-section"
+        style="display: none"
+      >
+        <h2>Live Scoring</h2>
+
+        <!-- Current Match Status -->
+        <div class="match-status">
+          <div class="status-card">
+            <h3 id="current-team">Pakistan</h3>
+            <div class="score-display">
+              <span id="current-score">0/0</span>
+              <span id="current-overs">(0.0 overs)</span>
+            </div>
+            <div class="target-info" id="target-info" style="display: none">
+              <span id="target-display">Target: 151</span>
+              <span id="required-info">Need 150 runs in 60 balls</span>
+              <span id="required-rr">Required RR: 15.00</span>
+            </div>
+          </div>
+
+          <div class="players-status">
+            <div class="batter-info">
+              <span id="striker-info">Striker: -</span>
+              <span id="non-striker-info">Non-Striker: -</span>
+            </div>
+            <div class="bowler-info">
+              <span id="bowler-info">Bowler: -</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ball Input -->
+        <div class="ball-input-section">
+          <h3>Ball Input</h3>
+          <div class="input-grid">
+            <div class="runs-input">
+              <label>Runs:</label>
+              <div class="runs-buttons">
+                <button class="run-btn" onclick="addRuns(0)">0</button>
+                <button class="run-btn" onclick="addRuns(1)">1</button>
+                <button class="run-btn" onclick="addRuns(2)">2</button>
+                <button class="run-btn" onclick="addRuns(3)">3</button>
+                <button class="run-btn" onclick="addRuns(4)">4</button>
+                <button class="run-btn" onclick="addRuns(6)">6</button>
+              </div>
+            </div>
+
+            <div class="extras-input">
+              <label>Extras:</label>
+              <div class="extras-buttons">
+                <button class="extra-btn" onclick="addExtra('wide')">
+                  Wide
+                </button>
+                <button class="extra-btn" onclick="addExtra('no_ball')">
+                  No Ball
+                </button>
+                <button class="extra-btn" onclick="addExtra('bye')">Bye</button>
+                <button class="extra-btn" onclick="addExtra('leg_bye')">
+                  Leg Bye
+                </button>
+              </div>
+              <input
+                type="number"
+                id="extra-runs"
+                placeholder="Extra runs"
+                min="0"
+                style="display: none"
+              />
+            </div>
+
+            <div class="wicket-input">
+              <label>Wicket:</label>
+              <button class="wicket-btn" onclick="toggleWicket()">
+                Wicket
+              </button>
+              <div
+                class="wicket-details"
+                id="wicket-details"
+                style="display: none"
+              >
+                <select id="wicket-type">
+                  <option value="bowled">Bowled</option>
+                  <option value="caught">Caught</option>
+                  <option value="lbw">LBW</option>
+                  <option value="run_out">Run Out</option>
+                  <option value="stumped">Stumped</option>
+                  <option value="hit_wicket">Hit Wicket</option>
+                </select>
+                <select id="dismissed-player">
+                  <option value="">Select Dismissed Player</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="ball-actions">
+            <button class="btn-primary" onclick="submitBall()">Add Ball</button>
+            <button class="btn-secondary" onclick="undoLastBall()" disabled>
+              Undo Last Ball
+            </button>
+          </div>
+        </div>
+
+        <!-- Current Over Display -->
+        <div class="current-over">
+          <h3>Current Over</h3>
+          <div class="over-balls" id="current-over-balls">-</div>
+        </div>
+      </section>
+
+      <!-- New Player Selection Modals -->
+      <div class="modal" id="new-bowler-modal" style="display: none">
+        <div class="modal-content">
+          <h3>Select New Bowler</h3>
+          <select id="new-bowler-select">
+            <option value="">Select Bowler</option>
+          </select>
+          <div class="modal-actions">
+            <button class="btn-primary" onclick="setNewBowler()">
+              Set Bowler
+            </button>
+            <button
+              class="btn-secondary"
+              onclick="closeModal('new-bowler-modal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id="new-batter-modal" style="display: none">
+        <div class="modal-content">
+          <h3>Select New Batter</h3>
+          <select id="new-batter-select">
+            <option value="">Select Batter</option>
+          </select>
+          <div class="modal-actions">
+            <button class="btn-primary" onclick="setNewBatter()">
+              Set Batter
+            </button>
+            <button
+              class="btn-secondary"
+              onclick="closeModal('new-batter-modal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Innings Setup Modal -->
+      <div class="modal" id="second-innings-modal" style="display: none">
+        <div class="modal-content">
+          <h3>Start Second Innings</h3>
+          <div class="form-group">
+            <label>Opening Striker:</label>
+            <select id="second-striker-select">
+              <option value="">Select Player</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Opening Non-Striker:</label>
+            <select id="second-non-striker-select">
+              <option value="">Select Player</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Opening Bowler:</label>
+            <select id="second-bowler-select">
+              <option value="">Select Player</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-primary" onclick="startSecondInnings()">
+              Start Second Innings
+            </button>
+            <button
+              class="btn-secondary"
+              onclick="closeModal('second-innings-modal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Match Complete Section -->
+      <section
+        class="match-complete-section"
+        id="match-complete-section"
+        style="display: none"
+      >
+        <h2>Match Complete!</h2>
+        <div class="match-result">
+          <div class="winner-display" id="winner-display">
+            <!-- Winner will be displayed here -->
+          </div>
+          <div class="final-scores" id="final-scores">
+            <!-- Final scores will be displayed here -->
+          </div>
+          <div class="match-actions">
+            <button class="btn-primary" onclick="createNewMatch()">
+              New Match
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Messages -->
+      <div class="messages" id="messages"></div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='control.js') }}"></script>
+  </body>
+</html>

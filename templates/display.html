@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket Live Display</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='display.css') }}"
+    />
+  </head>
+  <body>
+    <div class="scoreboard-container">
+      <!-- Header with team names and scores -->
+      <div class="header-section">
+        <div class="team-section team-left">
+          <div class="team-flag" id="team1-flag"></div>
+          <div class="team-name" id="team1-name">PAKISTAN</div>
+          <div class="team-score">
+            <span id="team1-runs">5</span>/<span id="team1-wickets">1</span>
+            <div class="team-overs" id="team1-overs">1.2</div>
+          </div>
+        </div>
+
+        <div class="match-info">
+          <div class="match-status" id="match-status">LEG BYE DOUBLE</div>
+          <div class="target-info" id="target-info">UAE OPT TO BOWL</div>
+        </div>
+
+        <div class="team-section team-right">
+          <div class="team-name" id="team2-name">UAE</div>
+          <div class="team-score">
+            <span id="team2-runs">B0</span>
+            <div class="team-overs" id="team2-overs" style="display: none">
+              0.0
+            </div>
+          </div>
+          <div class="team-flag" id="team2-flag"></div>
+        </div>
+      </div>
+
+      <!-- Match stats bar -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-label">CRR:</span>
+          <span class="stat-value" id="current-rr">3.75</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">P'SHIP:</span>
+          <span class="stat-value" id="partnership">2 (3)</span>
+        </div>
+        <div class="stat-item" id="required-rr-stat" style="display: none">
+          <span class="stat-label">REQ RR:</span>
+          <span class="stat-value" id="required-rr-value">8.50</span>
+        </div>
+        <div class="stat-item" id="need-runs-stat" style="display: none">
+          <span class="stat-label">NEED:</span>
+          <span class="stat-value" id="need-runs-value">45 in 30</span>
+        </div>
+        <div class="stat-item right-align" id="default-stat">
+          <span class="stat-label">UAE OPT TO BOWL</span>
+        </div>
+      </div>
+
+      <!-- Over breakdown -->
+      <div class="over-section" style="display: none">
+        <div class="over-header">
+          <span class="over-label">OVER 1:</span>
+          <span class="over-balls" id="over-balls">2 0 1lb 0 W 0</span>
+          <span class="over-total">=3</span>
+          <span class="over-label">OVER 2:</span>
+          <span class="over-balls" id="current-over-balls">0 2lb</span>
+          <span class="over-total">=2</span>
+        </div>
+      </div>
+
+      <!-- Player cards -->
+      <div class="players-section">
+        <!-- Batters -->
+        <div class="player-card batter-card">
+          <div class="player-flag"></div>
+          <div class="player-role" id="striker-role">STRIKER</div>
+          <div class="player-name" id="striker-name">SAHIBZADA FARHA</div>
+          <div class="player-stats">
+            <span class="player-score" id="striker-runs">2</span>
+            <span class="player-balls"
+              >(<span id="striker-balls">5</span>)</span
+            >
+          </div>
+          <div class="player-details">
+            <div class="detail-row">
+              <span>4s: <span id="striker-fours">0</span></span>
+              <span>6s: <span id="striker-sixes">0</span></span>
+              <span>SR: <span id="striker-sr">40.00</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card batter-card">
+          <div class="player-flag"></div>
+          <div class="player-role" id="non-striker-role">NON-STRIKER</div>
+          <div class="player-name" id="non-striker-name">FAKHAR ZAMAN</div>
+          <div class="player-stats">
+            <span class="player-score" id="non-striker-runs">0</span>
+            <span class="player-balls"
+              >(<span id="non-striker-balls">1</span>)</span
+            >
+          </div>
+          <div class="player-details">
+            <div class="detail-row">
+              <span>4s: <span id="non-striker-fours">0</span></span>
+              <span>6s: <span id="non-striker-sixes">0</span></span>
+              <span>SR: <span id="non-striker-sr">0.00</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bowler -->
+        <div class="player-card bowler-card">
+          <div class="player-flag"></div>
+          <div class="player-role">BOWLER</div>
+          <div class="player-name" id="bowler-name">MUHAMMAD ROHID</div>
+          <div class="player-stats">
+            <span class="player-score" id="bowler-wickets">0-0</span>
+            <span class="player-balls"
+              >(<span id="bowler-overs">0.2</span>)</span
+            >
+          </div>
+          <div class="player-details">
+            <div class="detail-row">
+              <span>Econ: <span id="bowler-economy">0.00</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Last wicket and other info -->
+      <div class="bottom-info">
+        <div class="last-wicket" id="last-wicket-info">
+          Last Wkt: S Ayub 0 (2) - K Shah (Avg. 17.92) - H Nawaz (Avg. 23.47)
+        </div>
+        <div class="scorecard-button">
+          <button class="show-scorecard" id="show-scorecard">
+            📊 FULL SCORECARD
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scorecard Section -->
+    <div class="scorecard-section" id="scorecard-section" style="display: none">
+      <div class="scorecard-header">
+        <h2>FULL SCORECARD</h2>
+        <button class="close-scorecard" id="close-scorecard">×</button>
+      </div>
+
+      <div class="scorecard-content">
+        <!-- First Innings -->
+        <div class="innings-scorecard" id="innings1-scorecard">
+          <div class="innings-header">
+            <h3><span id="innings1-team-name">Team 1</span> - 1st Innings</h3>
+            <div class="innings-score">
+              <span id="innings1-final-score">165/8 (20.0 ov)</span>
+            </div>
+          </div>
+
+          <!-- Batting Table -->
+          <div class="batting-section">
+            <h4>BATTING</h4>
+            <div class="batting-table">
+              <div class="batting-header">
+                <span class="bat-player">Batsman</span>
+                <span class="bat-runs">R</span>
+                <span class="bat-balls">B</span>
+                <span class="bat-fours">4s</span>
+                <span class="bat-sixes">6s</span>
+                <span class="bat-sr">SR</span>
+                <span class="bat-dismissal">Dismissal</span>
+              </div>
+              <div class="batting-rows" id="innings1-batting">
+                <!-- Batting rows will be populated here -->
+              </div>
+            </div>
+            <div class="batting-extras">
+              <span
+                >Extras:
+                <span id="innings1-extras"
+                  >12 (b 4, lb 2, w 5, nb 1)</span
+                ></span
+              >
+            </div>
+          </div>
+
+          <!-- Bowling Table -->
+          <div class="bowling-section">
+            <h4>BOWLING</h4>
+            <div class="bowling-table">
+              <div class="bowling-header">
+                <span class="bowl-player">Bowler</span>
+                <span class="bowl-overs">O</span>
+                <span class="bowl-maidens">M</span>
+                <span class="bowl-runs">R</span>
+                <span class="bowl-wickets">W</span>
+                <span class="bowl-economy">Econ</span>
+              </div>
+              <div class="bowling-rows" id="innings1-bowling">
+                <!-- Bowling rows will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Second Innings -->
+        <div
+          class="innings-scorecard"
+          id="innings2-scorecard"
+          style="display: none"
+        >
+          <div class="innings-header">
+            <h3><span id="innings2-team-name">Team 2</span> - 2nd Innings</h3>
+            <div class="innings-score">
+              <span id="innings2-final-score">120/10 (18.3 ov)</span>
+            </div>
+          </div>
+
+          <!-- Batting Table -->
+          <div class="batting-section">
+            <h4>BATTING</h4>
+            <div class="batting-table">
+              <div class="batting-header">
+                <span class="bat-player">Batsman</span>
+                <span class="bat-runs">R</span>
+                <span class="bat-balls">B</span>
+                <span class="bat-fours">4s</span>
+                <span class="bat-sixes">6s</span>
+                <span class="bat-sr">SR</span>
+                <span class="bat-dismissal">Dismissal</span>
+              </div>
+              <div class="batting-rows" id="innings2-batting">
+                <!-- Batting rows will be populated here -->
+              </div>
+            </div>
+            <div class="batting-extras">
+              <span
+                >Extras:
+                <span id="innings2-extras">8 (b 2, lb 1, w 4, nb 1)</span></span
+              >
+            </div>
+          </div>
+
+          <!-- Bowling Table -->
+          <div class="bowling-section">
+            <h4>BOWLING</h4>
+            <div class="bowling-table">
+              <div class="bowling-header">
+                <span class="bowl-player">Bowler</span>
+                <span class="bowl-overs">O</span>
+                <span class="bowl-maidens">M</span>
+                <span class="bowl-runs">R</span>
+                <span class="bowl-wickets">W</span>
+                <span class="bowl-economy">Econ</span>
+              </div>
+              <div class="bowling-rows" id="innings2-bowling">
+                <!-- Bowling rows will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Match Result Display -->
+    <div
+      class="match-result-overlay"
+      id="match-result-overlay"
+      style="display: none"
+    >
+      <div class="match-result-content">
+        <div class="match-result-header">MATCH RESULT</div>
+        <div class="match-result-text" id="match-result-text">
+          Pakistan won by 45 runs
+        </div>
+        <div class="final-scores-display">
+          <div class="final-score-item" id="final-team1-score">
+            Pakistan: 165/8
+          </div>
+          <div class="final-score-item" id="final-team2-score">UAE: 120/10</div>
+        </div>
+        <div class="match-result-buttons">
+          <button
+            class="match-result-btn scorecard-btn"
+            id="view-scorecard-btn"
+          >
+            📊 VIEW SCORECARD
+          </button>
+          <button class="match-result-btn close-btn" id="close-result-btn">
+            ✕ CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connection status -->
+    <!-- <div class="connection-status" id="connection-status">
+      <span class="status-dot"></span>
+      <span class="status-text">Connecting...</span>
+    </div> -->
+
+    <!-- Debug info -->
+    <!-- <div
+      id="debug-info"
+      style="
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 998;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 12px;
+        max-width: 300px;
+      "
+    >
+      Match Status: <span id="debug-status">Loading...</span><br />
+      Is Finished: <span id="debug-finished">-</span><br />
+      Winner: <span id="debug-winner">-</span><br />
+      Result: <span id="debug-result">-</span>
+    </div> -->
+
+    <!-- Test button for match result -->
+    <!-- <button
+      id="test-match-result"
+      style="
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 999;
+        padding: 15px 20px;
+        background: #ff4444;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      "
+      onclick="testMatchResult()"
+    >
+      🏆 Test Match Result
+    </button> -->
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='display.js') }}"></script>
+  </body>
+</html>

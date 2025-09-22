@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket Scoring App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+
+      .main-container {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        color: #333;
+        max-width: 600px;
+      }
+
+      h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #2d3748;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .cricket-icon {
+        font-size: 64px;
+        margin-bottom: 30px;
+      }
+
+      .description {
+        font-size: 18px;
+        margin-bottom: 40px;
+        color: #4a5568;
+        line-height: 1.6;
+      }
+
+      .links-container {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .app-link {
+        display: block;
+        padding: 20px 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        min-width: 200px;
+      }
+
+      .app-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .control-link {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      }
+
+      .display-link {
+        background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+      }
+
+      .features {
+        margin-top: 40px;
+        text-align: left;
+      }
+
+      .features h3 {
+        color: #2d3748;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .features ul {
+        list-style: none;
+        color: #4a5568;
+      }
+
+      .features li {
+        padding: 8px 0;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .features li::before {
+        content: "🏏";
+        position: absolute;
+        left: 0;
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          margin: 20px;
+          padding: 30px 20px;
+        }
+
+        h1 {
+          font-size: 36px;
+        }
+
+        .links-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="cricket-icon">🏏</div>
+      <h1>Cricket Scoring App</h1>
+      <p class="description">
+        A comprehensive cricket match scoring application with real-time display
+        and professional broadcast-style graphics.
+      </p>
+
+      <div class="links-container">
+        <a href="/control" class="app-link control-link">
+          📊 Control Panel
+          <br /><small>Score matches ball by ball</small>
+        </a>
+        <a href="/display" class="app-link display-link">
+          📺 Live Display
+          <br /><small>View live scoreboard</small>
+        </a>
+      </div>
+
+      <div class="features">
+        <h3>Features</h3>
+        <ul>
+          <li>Real-time scoreboard with broadcast-style graphics</li>
+          <li>Ball-by-ball scoring with all cricket rules</li>
+          <li>Player statistics tracking</li>
+          <li>Automatic striker rotation and over management</li>
+          <li>Match state persistence and resumption</li>
+          <li>Professional-looking display interface</li>
+          <li>WebSocket-based real-time updates</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
