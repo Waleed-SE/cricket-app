@@ -1,13 +1,27 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_socketio import SocketIO, emit
 import os
 import json
+import uuid
+from werkzeug.utils import secure_filename
 from models import Match, WicketType, ExtraType
 from typing import Optional
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cricket_scoring_secret_key'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['UPLOAD_FOLDER'] = 'static/uploads/flags'
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
+
+# Create upload directory if it doesn't exist
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Allowed file extensions for flags
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Global match instance
 current_match: Optional[Match] = None
@@ -47,6 +61,68 @@ def get_match_status():
         return jsonify(current_match.get_current_status())
     return jsonify({'error': 'No active match'})
 
+@app.route('/api/upload-flag', methods=['POST'])
+def upload_flag():
+    """Upload team flag image"""
+    try:
+        if 'flag' not in request.files:
+            return jsonify({'error': 'No file provided'}), 400
+        
+        file = request.files['flag']
+        team_name = request.form.get('team_name', '')
+        
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if file and allowed_file(file.filename):
+            # Generate unique filename
+            filename = secure_filename(file.filename)
+            unique_filename = f"{team_name}_{uuid.uuid4().hex[:8]}.{filename.rsplit('.', 1)[1].lower()}"
+            
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+            file.save(filepath)
+            
+            # Return the URL path for the uploaded flag
+            flag_url = f"/static/uploads/flags/{unique_filename}"
+            
+            return jsonify({
+                'success': True,
+                'flag_url': flag_url,
+                'filename': unique_filename
+            })
+        else:
+            return jsonify({'error': 'Invalid file type. Please upload PNG, JPG, JPEG, GIF, or SVG files.'}), 400
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/saved-flags')
+def get_saved_flags():
+    """Get list of saved flag files"""
+    try:
+        flags = []
+        flags_dir = app.config['UPLOAD_FOLDER']
+        
+        if os.path.exists(flags_dir):
+            for filename in os.listdir(flags_dir):
+                if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg')):
+                    # Extract team name from filename (before the first underscore and UUID)
+                    team_name = filename.split('_')[0] if '_' in filename else filename.rsplit('.', 1)[0]
+                    
+                    flags.append({
+                        'filename': filename,
+                        'team_name': team_name,
+                        'url': f"/static/uploads/flags/{filename}"
+                    })
+        
+        # Sort by team name for better organization
+        flags.sort(key=lambda x: x['team_name'].lower())
+        
+        return jsonify({'flags': flags})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 # WebSocket Events
 @socketio.on('connect')
 def handle_connect():
@@ -68,7 +144,9 @@ def handle_create_match(data):
         current_match = Match(
             team1_name=data['team1'],
             team2_name=data['team2'],
-            total_overs=int(data['total_overs'])
+            total_overs=int(data['total_overs']),
+            team1_flag=data.get('team1_flag', ''),
+            team2_flag=data.get('team2_flag', '')
         )
         
         # Add players

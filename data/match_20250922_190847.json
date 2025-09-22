@@ -1,0 +1,402 @@
+{
+  "match_info": {
+    "id": "20250922_190847",
+    "team1_name": "Pakistan",
+    "team2_name": "UAE",
+    "team1_flag": "/static/uploads/flags/Pakistan_a997ca80.png",
+    "team2_flag": "/static/uploads/flags/Pakistan_bb4688f7.png",
+    "total_overs": 20,
+    "toss_winner": "Pakistan",
+    "toss_decision": "bowl",
+    "current_innings": 1,
+    "is_started": true,
+    "is_finished": false,
+    "winner": "",
+    "match_result": ""
+  },
+  "current_state": {
+    "batting_team": "UAE",
+    "bowling_team": "Pakistan",
+    "striker": "Muhammad Rohid",
+    "non_striker": "Vriitya Aravind",
+    "bowler": "Babar Azam",
+    "current_over": 2,
+    "current_ball": 0
+  },
+  "teams": {
+    "team1": {
+      "name": "Pakistan",
+      "players": [
+        "Sahibzada Farha",
+        "Fakhar Zaman",
+        "Babar Azam",
+        "Mohammad Rizwan",
+        "Shadab Khan",
+        "Iftikhar Ahmed",
+        "Asif Ali",
+        "Imad Wasim",
+        "Shaheen Afridi",
+        "Haris Rauf",
+        "Naseem Shah"
+      ],
+      "runs": 0,
+      "wickets": 0,
+      "overs": 0.0,
+      "extras": 0
+    },
+    "team2": {
+      "name": "UAE",
+      "players": [
+        "Muhammad Waseem",
+        "Vriitya Aravind",
+        "Aryansh Sharma",
+        "Asif Khan",
+        "Basil Hameed",
+        "Muhammad Rohid",
+        "Aayan Khan",
+        "Karthik Meiyappan",
+        "Junaid Siddique",
+        "Ali Naseer",
+        "Zahoor Khan"
+      ],
+      "runs": 16,
+      "wickets": 0,
+      "overs": 1.0,
+      "extras": 0
+    }
+  },
+  "players": {
+    "Sahibzada Farha": {
+      "name": "Sahibzada Farha",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 1.0,
+      "runs_conceded": 16,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Fakhar Zaman": {
+      "name": "Fakhar Zaman",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Babar Azam": {
+      "name": "Babar Azam",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Mohammad Rizwan": {
+      "name": "Mohammad Rizwan",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Shadab Khan": {
+      "name": "Shadab Khan",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Iftikhar Ahmed": {
+      "name": "Iftikhar Ahmed",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Asif Ali": {
+      "name": "Asif Ali",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Imad Wasim": {
+      "name": "Imad Wasim",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Shaheen Afridi": {
+      "name": "Shaheen Afridi",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Haris Rauf": {
+      "name": "Haris Rauf",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Naseem Shah": {
+      "name": "Naseem Shah",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Muhammad Waseem": {
+      "name": "Muhammad Waseem",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Vriitya Aravind": {
+      "name": "Vriitya Aravind",
+      "runs": 16,
+      "balls_faced": 6,
+      "fours": 1,
+      "sixes": 2,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Aryansh Sharma": {
+      "name": "Aryansh Sharma",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Asif Khan": {
+      "name": "Asif Khan",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Basil Hameed": {
+      "name": "Basil Hameed",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Muhammad Rohid": {
+      "name": "Muhammad Rohid",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Aayan Khan": {
+      "name": "Aayan Khan",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Karthik Meiyappan": {
+      "name": "Karthik Meiyappan",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Junaid Siddique": {
+      "name": "Junaid Siddique",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Ali Naseer": {
+      "name": "Ali Naseer",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    },
+    "Zahoor Khan": {
+      "name": "Zahoor Khan",
+      "runs": 0,
+      "balls_faced": 0,
+      "fours": 0,
+      "sixes": 0,
+      "overs_bowled": 0.0,
+      "runs_conceded": 0,
+      "wickets_taken": 0,
+      "maidens": 0
+    }
+  },
+  "overs": [
+    {
+      "over_number": 1,
+      "bowler": "Sahibzada Farha",
+      "balls": [
+        {
+          "runs": 6,
+          "is_wicket": false,
+          "wicket_type": null,
+          "dismissed_player": null,
+          "extra_type": null,
+          "extra_runs": 0,
+          "bowler": "Sahibzada Farha",
+          "prev_striker": "Vriitya Aravind",
+          "prev_non_striker": "Muhammad Rohid"
+        },
+        {
+          "runs": 6,
+          "is_wicket": false,
+          "wicket_type": null,
+          "dismissed_player": null,
+          "extra_type": null,
+          "extra_runs": 0,
+          "bowler": "Sahibzada Farha",
+          "prev_striker": "Vriitya Aravind",
+          "prev_non_striker": "Muhammad Rohid"
+        },
+        {
+          "runs": 0,
+          "is_wicket": false,
+          "wicket_type": null,
+          "dismissed_player": null,
+          "extra_type": null,
+          "extra_runs": 0,
+          "bowler": "Sahibzada Farha",
+          "prev_striker": "Vriitya Aravind",
+          "prev_non_striker": "Muhammad Rohid"
+        },
+        {
+          "runs": 0,
+          "is_wicket": false,
+          "wicket_type": null,
+          "dismissed_player": null,
+          "extra_type": null,
+          "extra_runs": 0,
+          "bowler": "Sahibzada Farha",
+          "prev_striker": "Vriitya Aravind",
+          "prev_non_striker": "Muhammad Rohid"
+        },
+        {
+          "runs": 0,
+          "is_wicket": false,
+          "wicket_type": null,
+          "dismissed_player": null,
+          "extra_type": null,
+          "extra_runs": 0,
+          "bowler": "Sahibzada Farha",
+          "prev_striker": "Vriitya Aravind",
+          "prev_non_striker": "Muhammad Rohid"
+        },
+        {
+          "runs": 4,
+          "is_wicket": false,
+          "wicket_type": null,
+          "dismissed_player": null,
+          "extra_type": null,
+          "extra_runs": 0,
+          "bowler": "Sahibzada Farha",
+          "prev_striker": "Vriitya Aravind",
+          "prev_non_striker": "Muhammad Rohid"
+        }
+      ],
+      "summary": "6 6 0 0 0 4"
+    },
+    {
+      "over_number": 2,
+      "bowler": "Babar Azam",
+      "balls": [],
+      "summary": ""
+    }
+  ],
+  "partnerships": [
+    {
+      "batter1": "Vriitya Aravind",
+      "batter2": "Muhammad Rohid",
+      "runs": 16,
+      "balls": 6
+    }
+  ],
+  "fall_of_wickets": []
+}

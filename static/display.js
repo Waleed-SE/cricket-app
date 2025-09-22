@@ -211,6 +211,10 @@ class CricketDisplay {
     // Clear last wicket
     const lastWicketEl = document.getElementById("last-wicket-info");
     if (lastWicketEl) lastWicketEl.textContent = "No wickets";
+
+    // Clear team flags
+    this.updateTeamFlag("team1-flag", "");
+    this.updateTeamFlag("team2-flag", "");
   }
 
   updateTeamInfo() {
@@ -259,6 +263,20 @@ class CricketDisplay {
     document.getElementById("team1-runs").textContent = battingTeam.runs || 0;
     document.getElementById("team1-wickets").textContent =
       battingTeam.wickets || 0;
+
+    // Update team flags
+    this.updateTeamFlag(
+      "team1-flag",
+      battingTeam.name === team1.name
+        ? this.currentMatch.team1_flag
+        : this.currentMatch.team2_flag
+    );
+    this.updateTeamFlag(
+      "team2-flag",
+      bowlingTeam.name === team1.name
+        ? this.currentMatch.team1_flag
+        : this.currentMatch.team2_flag
+    );
 
     // Update current overs for batting team - use match-level current_over and current_ball
     const currentOver = this.currentMatch.current_over || 0;
@@ -923,6 +941,21 @@ class CricketDisplay {
       debugFinished.textContent = this.currentMatch.is_finished ? "YES" : "NO";
       debugWinner.textContent = this.currentMatch.winner || "-";
       debugResult.textContent = this.currentMatch.match_result || "-";
+    }
+  }
+
+  updateTeamFlag(flagElementId, flagUrl) {
+    const flagElement = document.getElementById(flagElementId);
+    if (!flagElement) return;
+
+    if (flagUrl && flagUrl.trim() !== "") {
+      // Clear any existing content and add the flag image
+      flagElement.innerHTML = `<img src="${flagUrl}" alt="Team Flag">`;
+      flagElement.classList.add("has-image");
+    } else {
+      // Clear the flag and show default styling
+      flagElement.innerHTML = "";
+      flagElement.classList.remove("has-image");
     }
   }
 

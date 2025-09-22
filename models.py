@@ -148,10 +148,12 @@ class Team:
         return (self.runs / self.overs) if self.overs > 0 else 0.0
 
 class Match:
-    def __init__(self, team1_name: str, team2_name: str, total_overs: int):
+    def __init__(self, team1_name: str, team2_name: str, total_overs: int, team1_flag: str = "", team2_flag: str = ""):
         self.id = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.team1 = Team(team1_name, [])
         self.team2 = Team(team2_name, [])
+        self.team1_flag = team1_flag
+        self.team2_flag = team2_flag
         self.total_overs = total_overs
         self.current_innings = 1
         self.toss_winner = ""
@@ -566,6 +568,8 @@ class Match:
             "match_id": self.id,
             "team1": serialize_dataclass(self.team1),
             "team2": serialize_dataclass(self.team2),
+            "team1_flag": self.team1_flag,
+            "team2_flag": self.team2_flag,
             "current_innings": self.current_innings,
             "batting_team": self.batting_team.name if self.batting_team else "",
             "bowling_team": self.bowling_team.name if self.bowling_team else "",
@@ -600,6 +604,8 @@ class Match:
                 "id": self.id,
                 "team1_name": self.team1.name,
                 "team2_name": self.team2.name,
+                "team1_flag": self.team1_flag,
+                "team2_flag": self.team2_flag,
                 "total_overs": self.total_overs,
                 "toss_winner": self.toss_winner,
                 "toss_decision": self.toss_decision,
@@ -650,7 +656,9 @@ class Match:
         match = cls(
             match_info["team1_name"],
             match_info["team2_name"],
-            match_info["total_overs"]
+            match_info["total_overs"],
+            match_info.get("team1_flag", ""),
+            match_info.get("team2_flag", "")
         )
         
         # Restore match info

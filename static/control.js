@@ -735,6 +735,8 @@ function createMatch() {
     toss_decision: tossDecision,
     team1_players: team1Players,
     team2_players: team2Players,
+    team1_flag: team1FlagUrl,
+    team2_flag: team2FlagUrl,
   });
 }
 
@@ -909,3 +911,189 @@ function createNewMatch() {
   // Reset the application to create a new match
   location.reload();
 }
+
+// Flag upload handling
+let team1FlagUrl = "";
+let team2FlagUrl = "";
+
+function setupFlagUploadListeners() {
+  const team1FlagInput = document.getElementById("team1-flag");
+  const team2FlagInput = document.getElementById("team2-flag");
+  const team1SavedFlags = document.getElementById("team1-saved-flags");
+  const team2SavedFlags = document.getElementById("team2-saved-flags");
+
+  if (team1FlagInput) {
+    team1FlagInput.addEventListener("change", function (e) {
+      handleFlagUpload(e, "team1");
+    });
+  }
+
+  if (team2FlagInput) {
+    team2FlagInput.addEventListener("change", function (e) {
+      handleFlagUpload(e, "team2");
+    });
+  }
+
+  if (team1SavedFlags) {
+    team1SavedFlags.addEventListener("change", function (e) {
+      handleSavedFlagSelection(e, "team1");
+    });
+  }
+
+  if (team2SavedFlags) {
+    team2SavedFlags.addEventListener("change", function (e) {
+      handleSavedFlagSelection(e, "team2");
+    });
+  }
+
+  // Load saved flags when listeners are set up
+  loadSavedFlags();
+}
+
+async function handleFlagUpload(event, teamType) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const previewElement = document.getElementById(`${teamType}-flag-preview`);
+  const teamNameElement = document.getElementById(`${teamType}-name`);
+  const teamName = teamNameElement ? teamNameElement.value : teamType;
+
+  // Show preview immediately
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    previewElement.innerHTML = `<img src="${e.target.result}" alt="${teamName} flag">`;
+    previewElement.classList.remove("empty");
+  };
+  reader.readAsDataURL(file);
+
+  // Upload file to server
+  try {
+    const formData = new FormData();
+    formData.append("flag", file);
+    formData.append("team_name", teamName);
+
+    const response = await fetch("/api/upload-flag", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      if (teamType === "team1") {
+        team1FlagUrl = result.flag_url;
+      } else {
+        team2FlagUrl = result.flag_url;
+      }
+      console.log(`${teamType} flag uploaded successfully:`, result.flag_url);
+
+      // Refresh the saved flags dropdown
+      loadSavedFlags();
+
+      // Clear the dropdown selection since we're using a newly uploaded flag
+      const dropdown = document.getElementById(`${teamType}-saved-flags`);
+      if (dropdown) {
+        dropdown.value = "";
+      }
+    } else {
+      console.error("Flag upload failed:", result.error);
+      alert("Flag upload failed: " + result.error);
+      previewElement.innerHTML = "";
+      previewElement.classList.add("empty");
+    }
+  } catch (error) {
+    console.error("Error uploading flag:", error);
+    alert("Error uploading flag. Please try again.");
+    previewElement.innerHTML = "";
+    previewElement.classList.add("empty");
+  }
+}
+
+async function loadSavedFlags() {
+  try {
+    const response = await fetch("/api/saved-flags");
+    const result = await response.json();
+
+    if (result.flags) {
+      populateFlagDropdowns(result.flags);
+    }
+  } catch (error) {
+    console.error("Error loading saved flags:", error);
+  }
+}
+
+function populateFlagDropdowns(flags) {
+  const team1Dropdown = document.getElementById("team1-saved-flags");
+  const team2Dropdown = document.getElementById("team2-saved-flags");
+
+  // Clear existing options except the first one
+  [team1Dropdown, team2Dropdown].forEach((dropdown) => {
+    if (dropdown) {
+      // Keep only the first option
+      while (dropdown.children.length > 1) {
+        dropdown.removeChild(dropdown.lastChild);
+      }
+
+      // Add saved flags as options
+      flags.forEach((flag) => {
+        const option = document.createElement("option");
+        option.value = flag.url;
+        option.textContent = flag.team_name;
+        option.setAttribute("data-filename", flag.filename);
+        dropdown.appendChild(option);
+      });
+    }
+  });
+}
+
+function handleSavedFlagSelection(event, teamType) {
+  const selectedUrl = event.target.value;
+  const selectedOption = event.target.selectedOptions[0];
+
+  if (selectedUrl) {
+    // Set the flag URL for the team
+    if (teamType === "team1") {
+      team1FlagUrl = selectedUrl;
+    } else {
+      team2FlagUrl = selectedUrl;
+    }
+
+    // Show preview
+    const previewElement = document.getElementById(`${teamType}-flag-preview`);
+    const teamName = selectedOption.textContent;
+
+    previewElement.innerHTML = `<img src="${selectedUrl}" alt="${teamName} flag">`;
+    previewElement.classList.remove("empty");
+
+    // Clear the file input since we're using a saved flag
+    const fileInput = document.getElementById(`${teamType}-flag`);
+    if (fileInput) {
+      fileInput.value = "";
+    }
+
+    console.log(`${teamType} flag selected from saved:`, selectedUrl);
+  } else {
+    // Clear the preview if no flag is selected
+    const previewElement = document.getElementById(`${teamType}-flag-preview`);
+    previewElement.innerHTML = "";
+    previewElement.classList.add("empty");
+
+    // Clear the flag URL
+    if (teamType === "team1") {
+      team1FlagUrl = "";
+    } else {
+      team2FlagUrl = "";
+    }
+  }
+}
+
+// Initialize flag upload listeners when DOM is ready
+document.addEventListener("DOMContentLoaded", function () {
+  setupFlagUploadListeners();
+
+  // Add empty class to preview containers initially
+  const preview1 = document.getElementById("team1-flag-preview");
+  const preview2 = document.getElementById("team2-flag-preview");
+  if (preview1) preview1.classList.add("empty");
+  if (preview2) preview2.classList.add("empty");
+});
